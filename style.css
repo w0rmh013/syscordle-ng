@@ -1,105 +1,54 @@
-body {
-  background: linear-gradient(135deg, #2c2c2c, #1a1a1a);
-  color: #fff;
-  font-family: 'Segoe UI', sans-serif;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  margin: 0;
+:root{
+  --bg1:#0b1220;
+  --bg2:#071028;
+  --panel:#0f1724;
+  --text:#edf6ff;
+  --muted:#9fb0c8;
+  --correct:#538d4e;
+  --present:#b59f3b;
+  --absent:#3a3a3c;
+  --accent:#8ec5ff;
 }
 
-#game-container {
-  text-align: center;
-  background: rgba(255, 255, 255, 0.05);
-  padding: 1.5rem 2rem;
-  border-radius: 16px;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
-}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));}
 
-#board {
-  display: grid;
-  grid-template-rows: repeat(6, 1fr);
-  gap: 4px;
-  margin-bottom: 1rem;
-}
+.app{max-width:820px;margin:28px auto;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);box-shadow:0 8px 40px rgba(0,0,0,0.6)}
+header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
+h1{font-size:18px;margin:0}
+.stats{display:flex;gap:12px}
+.stats div{display:flex;flex-direction:column;align-items:center;font-size:13px;color:var(--muted)}
+.stats strong{color:var(--accent);font-size:16px}
 
-.row {
-  display: grid;
-  grid-template-columns: repeat(5, 1fr);
-  gap: 4px;
-}
+.board{display:grid;grid-template-rows:repeat(6,1fr);gap:6px;justify-items:center;margin:6px 0}
+.row{display:grid;grid-template-columns:repeat(5,56px);gap:6px}
+.cell{width:56px;height:56px;border-radius:8px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;letter-spacing:2px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.03);transition:transform .32s ease, background .28s ease}
 
-.cell {
-  width: 55px;
-  height: 55px;
-  border: 2px solid #555;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.6rem;
-  font-weight: bold;
-  border-radius: 8px;
-  background: #222;
-  transition: transform 0.4s ease, background 0.3s ease;
-}
+.cell.filled{border-color:rgba(255,255,255,0.06)}
 
-.correct {
-  background-color: #538d4e !important;
-}
-.present {
-  background-color: #b59f3b !important;
-}
-.absent {
-  background-color: #3a3a3c !important;
-}
+.cell.correct{background:var(--correct);border-color:var(--correct)}
+.cell.present{background:var(--present);border-color:var(--present)}
+.cell.absent{background:var(--absent);border-color:var(--absent)}
 
-#keyboard {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 5px;
-  justify-content: center;
-  margin-top: 1rem;
-  max-width: 350px;
-  margin-left: auto;
-  margin-right: auto;
-}
+.controls{display:flex;gap:14px;align-items:flex-start;margin-top:12px}
+.keyboard{display:grid;grid-template-columns:repeat(10,34px);gap:8px;align-self:flex-start}
+.numpad{display:grid;grid-template-columns:repeat(3,48px);gap:8px;align-self:flex-start}
+.side{display:flex;flex-direction:column;gap:10px;align-items:center}
+.side-buttons{display:flex;flex-direction:column;gap:8px}
+.key{background:#0f1728;color:var(--text);border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:8px;cursor:pointer;font-weight:600;text-align:center;min-width:34px}
+.key:active{transform:translateY(1px)}
+.key.action{min-width:48px;padding:10px 12px}
+.key.enter{min-width:72px}
+.key.back{min-width:56px}
 
-.key {
-  background: #444;
-  color: #fff;
-  border: none;
-  border-radius: 6px;
-  padding: 0.6rem 0.5rem;
-  cursor: pointer;
-  font-weight: bold;
-  width: 32px;
-  min-width: 32px;
-  text-align: center;
-  transition: background 0.2s;
-}
+.notice{height:22px;margin-top:10px;color:var(--muted);text-align:center;min-height:22px}
+.footer{margin-top:12px;text-align:center;color:var(--muted);font-size:12px}
 
-.key.enter {
-  width: 60px;
-}
-
-.key.back {
-  width: 45px;
-}
-
-.key:hover {
-  background: #666;
-}
-
-#notice {
-  margin-top: 1rem;
-  height: 1.2rem;
-  color: #ff7070;
-}
-
-#stats {
-  margin-top: 0.8rem;
-  font-size: 1rem;
-  opacity: 0.8;
+/* smaller screens */
+@media (max-width:640px){
+  .app{margin:12px;padding:12px}
+  .row{grid-template-columns:repeat(5,44px)}
+  .cell{width:44px;height:44px;font-size:20px}
+  .keyboard{grid-template-columns:repeat(10,30px);gap:6px}
+  .numpad{grid-template-columns:repeat(3,40px);gap:6px}
 }

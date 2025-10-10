@@ -15,14 +15,38 @@ h1 {
   margin-bottom: 1rem;
 }
 
-#notice {
-  margin-bottom: 1rem;
-  background: rgba(0,0,0,0.8);
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.3s;
+#board-container {
+  position: relative; /* make notice positioned relative to board */
+  width: max-content;
+  margin: 0 auto;
 }
+
+#notice {
+  position: absolute;
+  top: 20%; /* or adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.85);
+  color: #fff;
+  padding: 0.3rem 0.8rem; /* smaller padding for a tight fit */
+  border-radius: 6px;
+  font-weight: bold;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap; /* keeps text on a single line */
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block; /* shrink to fit content */
+}
+
+/* When showing notice */
+#notice.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(10px);
+  pointer-events: auto;
+}
+
 
 #board {
   display: grid;

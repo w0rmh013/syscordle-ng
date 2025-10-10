@@ -89,9 +89,13 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   function showNotice(msg) {
-    notice.textContent = msg;
-    notice.style.opacity = 1;
-    setTimeout(() => (notice.style.opacity = 0), 1500);
+    const noticeEl = document.getElementById('notice');
+    noticeEl.textContent = msg;
+    noticeEl.classList.add('show');
+
+    setTimeout(() => {
+      noticeEl.classList.remove('show');
+    }, 2000); // hide after 2 seconds
   }
 
   function evaluate(guess, sol) {

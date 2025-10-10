@@ -299,7 +299,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add attempts summary
     const lastKey = localStorage.getItem('lastGameKey');
     const attempts = lastKey === 'fail' ? 'X' : history.length;
-    const text = `Syscordle-ng: ${attempts}/6\n${grid}`;
+    const text = `syscordle_ng: ${attempts}/6\n${grid}`;
 
     navigator.clipboard.writeText(text)
       .then(() => showNotice('Copied result to clipboard!'))

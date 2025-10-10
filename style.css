@@ -1,5 +1,5 @@
 body {
-  font-family: 'Courier New', Courier, monospace;
+  font-family: 'Fira Mono', 'Courier New', Courier, monospace; /* console-style font */
   background: linear-gradient(160deg, #222, #111);
   color: #fff;
   display: flex;
@@ -23,30 +23,28 @@ h1 {
 
 #notice {
   position: absolute;
-  top: 20%; /* or adjust as needed */
+  top: 20%; /* adjust as needed */
   left: 50%;
   transform: translateX(-50%);
-  background: rgba(0,0,0,0.85);
-  color: #fff;
-  padding: 0.3rem 0.8rem; /* smaller padding for a tight fit */
-  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff; /* plain white, no green */
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px; /* slightly smaller rounded corners for console vibe */
   font-weight: bold;
   z-index: 100;
   opacity: 0;
   pointer-events: none;
-  white-space: nowrap; /* keeps text on a single line */
+  white-space: nowrap; /* single line */
   font-size: 0.9rem;
   transition: opacity 0.3s ease, transform 0.3s ease;
-  display: inline-block; /* shrink to fit content */
+  display: inline-block;
 }
 
-/* When showing notice */
 #notice.show {
   opacity: 1;
   transform: translateX(-50%) translateY(10px);
   pointer-events: auto;
 }
-
 
 #board {
   display: grid;
@@ -67,16 +65,17 @@ h1 {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.5rem;
+  font-size: 1.6rem;        /* slightly larger for emphasis */
+  font-weight: 900;          /* extra bold */
   text-transform: uppercase;
   background: #111;
-  border-radius: 8px;
+  border-radius: 2px; /* squared for console vibe */
   transition: background 0.3s, transform 0.4s;
 }
 
-.cell.correct { background: #538d4e; border-color: #538d4e; }
-.cell.present { background: #b59f3b; border-color: #b59f3b; }
-.cell.absent  { background: #3a3a3c; border-color: #3a3a3c; }
+.cell.correct { background: #43a047; border-color: #43a047; color: #fff; }  /* brighter muted green */
+.cell.present { background: #c0b14f; border-color: #c0b14f; color: #fff; }  /* brighter muted yellow */
+.cell.absent  { background: #333; border-color: #333; color: #888; }
 
 #keyboard {
   display: flex;
@@ -92,10 +91,10 @@ h1 {
 }
 
 .key {
-  background: #444;
+  background: #222;
   color: #fff;
-  border: none;
-  border-radius: 6px;
+  border: 1px solid #555;
+  border-radius: 2px; /* squared keys */
   padding: 0.6rem 0.5rem;
   cursor: pointer;
   font-weight: bold;
@@ -104,11 +103,10 @@ h1 {
   transition: background 0.2s;
 }
 
-.key:hover { background: #666; }
+.key:hover { background: #444; }
 .key.enter { width: 70px; }
 .key.back  { width: 55px; }
 
-/* Modal */
 .modal {
   position: fixed;
   top: 0; left: 0;
@@ -121,21 +119,19 @@ h1 {
 }
 
 .modal-content {
-  background: rgba(17, 17, 17, 0.7); /* dark background with slight transparency */
+  background: rgba(17, 17, 17, 0.8); /* slightly more transparent */
   padding: 1.5rem;
-  border-radius: 10px;
+  border-radius: 6px; /* smaller radius for console vibe */
   width: 90%;
   max-width: 400px;
   color: #fff;
   text-align: center;
+  font-family: inherit;
 }
 
-
 #stats-overview p { margin: 0.5rem 0; }
-
 #guess-dist { margin-top: 1rem; display: flex; flex-direction: column; gap: 6px; }
 
-/* Guess Distribution Bars */
 .guess-bar {
   display: flex;
   align-items: center;
@@ -150,37 +146,23 @@ h1 {
 }
 
 .bar {
-  /* remove background fill */
   flex: 1;
   height: 20px;
-  border-radius: 6px;
+  border-radius: 2px; /* squared bar edges */
   overflow: hidden;
   position: relative;
 }
 
 .fill {
-  background: #777; /* grey for normal bars */
-  height: 100%;
-  width: 0%; /* width will now only be proportional to value */
-  border-radius: 6px;
-  transition: width 0.5s;
-}
-
-.guess-bar .fill {
-  background: #777; /* default grey */
+  background: #555; /* default grey */
   height: 100%;
   width: 0%;
-  border-radius: 6px;
+  border-radius: 2px;
   transition: width 0.5s;
 }
 
-.guess-bar.current.win .fill {
-  background: #538d4e; /* green for win */
-}
-
-.guess-bar.current.fail .fill {
-  background: #b91c1c; /* red for fail */
-}
+.guess-bar.current.win .fill { background: #43a047; }   /* same green as correct letters */
+.guess-bar.current.fail .fill { background: #b91c1c; }  /* red stays the same */
 
 .bar-value {
   position: absolute;
@@ -193,7 +175,7 @@ h1 {
 }
 
 #stats-button-container {
-  margin: 0.5rem 0; /* space between board and keyboard */
+  margin: 0.5rem 0;
   display: flex;
   justify-content: center;
 }
@@ -203,65 +185,52 @@ h1 {
   border: none;
   background: #374151;
   color: #fff;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
   font-weight: bold;
 }
 
-#show-stats-btn:hover {
-  background: #1f2937;
-}
+#show-stats-btn:hover { background: #1f2937; }
 
 .stats-buttons {
   display: flex;
   justify-content: center;
-  gap: 0.5rem; /* small space between buttons */
+  gap: 0.5rem;
   margin-top: 1rem;
 }
 
-/* Keep each button’s original style with rounded corners and hover */
 #share-btn {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;   /* round corners */
+  border-radius: 4px;
   background: #2563eb;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
 }
-
-#share-btn:hover {
-  background: #1e40af;   /* slightly darker on hover */
-}
+#share-btn:hover { background: #1e40af; }
 
 #close-stats {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   background: #374151;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
 }
-
-#close-stats:hover {
-  background: #1f2937;
-}
+#close-stats:hover { background: #1f2937; }
 
 #reset-stats-btn {
   padding: 0.5rem 1rem;
   border: none;
-  border-radius: 6px;
+  border-radius: 4px;
   background: #b91c1c;
   color: #fff;
   font-weight: bold;
   cursor: pointer;
   transition: background 0.2s;
 }
-
-#reset-stats-btn:hover {
-  background: #7f1d1d;
-}
-
+#reset-stats-btn:hover { background: #7f1d1d; }

@@ -199,12 +199,8 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     modal.style.display = 'flex';
+    modal.classList.add('show');
   }
-
-  // Close modal
-  document.getElementById('close-stats').addEventListener('click', () => {
-    document.getElementById('stats-modal').style.display = 'none';
-  });
 
   // Show Stats button
   function showStatsButton() {
@@ -224,12 +220,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Close stats modal when clicking the "Close" button
   document.getElementById('close-stats').addEventListener('click', () => {
-    document.getElementById('stats-modal').style.display = 'none';
+    document.getElementById('stats-modal').classList.remove('show');
   });
 
   document.addEventListener('keydown', e => {
     if (e.key === 'Escape') {
-      document.getElementById('stats-modal').style.display = 'none';
+      document.getElementById('stats-modal').classList.remove('show');
     }
   });
 

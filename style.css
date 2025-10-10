@@ -107,27 +107,39 @@ h1 {
 .key.enter { width: 70px; }
 .key.back  { width: 55px; }
 
+/* Stats Modal */
 .modal {
   position: fixed;
   top: 0; left: 0;
   width: 100%; height: 100%;
   background: rgba(0,0,0,0.6);
-  display: none;
+  display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
+
+  opacity: 0;                 /* start hidden */
+  pointer-events: none;       /* prevent interaction when hidden */
+  transition: opacity 0.3s ease;
 }
 
+/* Show modal */
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;       /* enable interaction when visible */
+}
+
+/* Keep modal content as-is */
 .modal-content {
-  background: rgba(17, 17, 17, 0.8); /* slightly more transparent */
+  background: rgba(17, 17, 17, 0.7);
   padding: 1.5rem;
-  border-radius: 6px; /* smaller radius for console vibe */
+  border-radius: 10px;
   width: 90%;
   max-width: 400px;
   color: #fff;
   text-align: center;
-  font-family: inherit;
 }
+
 
 #stats-overview p { margin: 0.5rem 0; }
 #guess-dist { margin-top: 1rem; display: flex; flex-direction: column; gap: 6px; }

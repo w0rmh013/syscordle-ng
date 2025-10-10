@@ -1,108 +1,86 @@
-:root{
-  --tile:56px;
-  --gap:6px;
-  --key-w:44px;
-  --key-h:40px;
-  --bg1:#081226;
-  --bg2:#071020;
-  --panel:rgba(255,255,255,0.03);
-  --text:#eaf4ff;
-  --muted:#9fb0c8;
-  --correct:#538d4e;
-  --present:#b59f3b;
-  --absent:#3a3a3c;
+body {
+  font-family: Arial, sans-serif;
+  background: linear-gradient(160deg, #222, #111);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
 }
 
-*{box-sizing:border-box}
-html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));}
-
-.wrap{max-width:420px;margin:28px auto;padding:18px;border-radius:12px;background:linear-gradient(180deg,var(--panel),transparent);text-align:center}
-h1{margin:0 0 12px;font-size:20px}
-
-/* Board width is exactly (5 tiles + 4 gaps) so keyboard can match it */
-.board{
-  width: calc(var(--tile) * 5 + var(--gap) * 4);
-  margin: 0 auto 12px;
-  display:grid;
-  gap: var(--gap);
-  grid-template-rows: repeat(6, var(--tile));
+h1 {
+  letter-spacing: 3px;
+  margin-bottom: 1.2rem;
 }
 
-.row{
-  display:flex;
-  gap: var(--gap);
-  justify-content:center;
+#board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 0.3rem;
+  margin-bottom: 2rem;
 }
 
-.cell{
-  width:var(--tile);
-  height:var(--tile);
-  border-radius:8px;
-  background: rgba(255,255,255,0.02);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-weight:700;
-  font-size:22px;
-  text-transform:uppercase;
-  border:2px solid rgba(255,255,255,0.03);
-  transition: transform 0.28s ease, background 0.24s ease;
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.3rem;
 }
 
-.cell.filled{border-color:rgba(255,255,255,0.06)}
-.cell.correct{background:var(--correct);border-color:var(--correct)}
-.cell.present{background:var(--present);border-color:var(--present)}
-.cell.absent{background:var(--absent);border-color:var(--absent)}
-
-/* Keyboard container width matches board so everything aligns */
-.keyboard-container{
-  width: calc(var(--tile) * 5 + var(--gap) * 4);
-  margin: 0 auto;
-  display:flex;
-  flex-direction:column;
-  gap:10px;
-  align-items:center;
+.cell {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  text-transform: uppercase;
+  background: #111;
+  border-radius: 8px;
+  transition: background 0.3s, transform 0.4s;
 }
 
-/* keyboard rows centered */
-.keyboard{ display:flex; flex-direction:column; gap:8px; width:100% }
-.krow{ display:flex; justify-content:center; gap:8px }
+.cell.correct { background: #538d4e; border-color: #538d4e; }
+.cell.present { background: #b59f3b; border-color: #b59f3b; }
+.cell.absent  { background: #3a3a3c; border-color: #3a3a3c; }
 
-/* key styling */
-.key{
-  min-width: var(--key-w);
-  height: var(--key-h);
-  border-radius:6px;
-  border:1px solid rgba(255,255,255,0.04);
-  background: rgba(255,255,255,0.02);
-  color:var(--text);
-  font-weight:700;
-  cursor:pointer;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  user-select:none;
-  padding:0 8px;
-}
-.key:active{ transform: translateY(1px) }
-
-.key.enter{ min-width: 84px }
-.key.back { min-width: 60px }
-
-.numpad{
-  display:grid;
-  grid-template-columns: repeat(3, var(--key-w));
-  gap:8px;
-  justify-content:center;
-  margin-top:2px;
+#keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
 }
 
-/* notice */
-.notice{ height:22px;margin-top:12px;color:var(--muted);font-size:13px;opacity:0;transition:opacity .2s }
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+}
 
-/* responsive: scale down on small screens */
-@media (max-width:400px){
-  :root{ --tile:48px; --key-w:38px; --key-h:36px; --gap:4px }
-  .wrap{ padding:12px }
-  h1{ font-size:18px }
+.key {
+  background: #444;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  width: 40px;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.key:hover { background: #666; }
+.key.enter { width: 70px; }
+.key.back  { width: 55px; }
+
+#notice {
+  margin-top: 1.2rem;
+  background: rgba(0,0,0,0.8);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }

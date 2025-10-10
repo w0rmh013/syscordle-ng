@@ -177,7 +177,7 @@ h1 {
 #show-stats-btn {
   padding: 0.5rem 1rem;
   border: none;
-  background: #538d4e;
+  background: #374151;
   color: #fff;
   border-radius: 6px;
   cursor: pointer;
@@ -185,32 +185,59 @@ h1 {
 }
 
 #show-stats-btn:hover {
-  background: #3a6d38;
+  background: #1f2937;
 }
 
-#close-stats {
+.stats-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem; /* small space between buttons */
   margin-top: 1rem;
-  padding: 0.5rem 1rem;
-  border: none;
-  background: #444;
-  color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
 }
 
-#close-stats:hover { background: #666; }
-
+/* Keep each button’s original style with rounded corners and hover */
 #share-btn {
-  margin-top: 1rem;
   padding: 0.5rem 1rem;
   border: none;
+  border-radius: 6px;   /* round corners */
   background: #2563eb;
   color: #fff;
-  border-radius: 6px;
-  cursor: pointer;
   font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
 }
 
 #share-btn:hover {
-  background: #1e40af;
+  background: #1e40af;   /* slightly darker on hover */
 }
+
+#close-stats {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #374151;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#close-stats:hover {
+  background: #1f2937;
+}
+
+#reset-stats-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background: #b91c1c;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+#reset-stats-btn:hover {
+  background: #7f1d1d;
+}
+

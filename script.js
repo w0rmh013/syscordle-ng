@@ -338,4 +338,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
+  document.getElementById('reset-stats-btn').addEventListener('click', () => {
+    if (!confirm('Are you sure you want to reset all stats?')) return;
+
+    // Clear all stored data
+    localStorage.removeItem('played');
+    localStorage.removeItem('wins');
+    localStorage.removeItem('streak');
+    localStorage.removeItem('maxStreak');
+    localStorage.removeItem('guessDist');
+    localStorage.removeItem('lastGameHistory');
+    localStorage.removeItem('lastGameKey');
+    localStorage.removeItem('dailyDate');
+
+    // Optionally reload page
+    location.reload();
+  });
+
+
 });

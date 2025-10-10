@@ -149,6 +149,9 @@ document.addEventListener('DOMContentLoaded', () => {
   function displayStatsModal(highlightKey = null) {
     const modal = document.getElementById('stats-modal');
 
+    // Display today's answer
+    document.getElementById('daily-answer-text').textContent = solution;
+
     // Load stats
     const played = parseInt(localStorage.getItem('played') || '0');
     const wins = parseInt(localStorage.getItem('wins') || '0');

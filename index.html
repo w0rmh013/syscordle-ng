@@ -1,24 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wordle Clone</title>
-  <link rel="stylesheet" href="style.css" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Wordle Clone</title>
+<link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <h1>Wordle Clone</h1>
+<h1>Wordle Clone</h1>
 
-  <!-- Notice popup above the board -->
-  <div id="notice"></div>
+<div id="notice"></div>
+<div id="board"></div>
+<div id="keyboard"></div>
 
-  <!-- Board -->
-  <div id="board"></div>
+<!-- Stats Modal -->
+<div id="stats-modal" class="modal">
+  <div class="modal-content">
+    <h2>Statistics</h2>
+    <div id="stats-overview">
+      <p>Played Games: <span id="stat-played">0</span></p>
+      <p>Win %: <span id="stat-winpct">0</span></p>
+      <p>Current Streak: <span id="stat-current">0</span></p>
+      <p>Max Streak: <span id="stat-max">0</span></p>
+    </div>
+    <h3>Guess Distribution</h3>
+    <div id="guess-dist">
+      <div class="guess-bar" data-tries="1"><span>1</span><div class="bar"><div class="fill"></div></div></div>
+      <div class="guess-bar" data-tries="2"><span>2</span><div class="bar"><div class="fill"></div></div></div>
+      <div class="guess-bar" data-tries="3"><span>3</span><div class="bar"><div class="fill"></div></div></div>
+      <div class="guess-bar" data-tries="4"><span>4</span><div class="bar"><div class="fill"></div></div></div>
+      <div class="guess-bar" data-tries="5"><span>5</span><div class="bar"><div class="fill"></div></div></div>
+      <div class="guess-bar" data-tries="6"><span>6</span><div class="bar"><div class="fill"></div></div></div>
+      <div class="guess-bar" data-tries="fail"><span>Fail</span><div class="bar"><div class="fill"></div></div></div>
+    </div>
+    <button id="close-stats">Close</button>
+  </div>
+</div>
 
-  <!-- Keyboard -->
-  <div id="keyboard"></div>
-
-  <script src="words.js"></script>
-  <script src="script.js"></script>
+<script src="words.js"></script>
+<script src="script.js"></script>
 </body>
 </html>

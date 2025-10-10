@@ -114,6 +114,52 @@ document.addEventListener('DOMContentLoaded', () => {
     return res;
   }
 
+  function showStats(win, attempts) {
+    const modal = document.getElementById('stats-modal');
+    const played = parseInt(localStorage.getItem('played') || '0');
+    const wins = parseInt(localStorage.getItem('wins') || '0');
+    const streak = parseInt(localStorage.getItem('streak') || '0');
+    const maxStreak = parseInt(localStorage.getItem('maxStreak') || '0');
+
+    const newPlayed = played + 1;
+    const newWins = wins + (win ? 1 : 0);
+    const newStreak = win ? streak + 1 : 0;
+    const newMaxStreak = Math.max(maxStreak, newStreak);
+
+    localStorage.setItem('played', newPlayed);
+    localStorage.setItem('wins', newWins);
+    localStorage.setItem('streak', newStreak);
+    localStorage.setItem('maxStreak', newMaxStreak);
+
+    document.getElementById('stat-played').textContent = newPlayed;
+    document.getElementById('stat-winpct').textContent = Math.round((newWins / newPlayed) * 100);
+    document.getElementById('stat-current').textContent = newStreak;
+    document.getElementById('stat-max').textContent = newMaxStreak;
+
+    // Guess distribution
+    const dist = JSON.parse(localStorage.getItem('guessDist') || '{}');
+    const key = win ? attempts : 'fail';
+    dist[key] = (dist[key] || 0) + 1;
+    localStorage.setItem('guessDist', JSON.stringify(dist));
+
+    // Determine max count for scaling
+    const maxCount = Math.max(...Object.values(dist));
+
+    document.querySelectorAll('.guess-bar').forEach(barEl => {
+      const tries = barEl.dataset.tries;
+      const count = dist[tries] || 0;
+      barEl.querySelector('.fill').style.width = maxCount ? ((count/maxCount)*100) + '%' : '0%';
+      barEl.classList.remove('current');
+      if (tries == key) barEl.classList.add('current');
+    });
+
+    modal.style.display = 'flex';
+  }
+
+  document.getElementById('close-stats').onclick = () => {
+    document.getElementById('stats-modal').style.display = 'none';
+  };
+
   function submitGuess() {
     if (col !== WIDTH) return showNotice('Not enough letters');
     const guess = board[row].join('').toLowerCase();
@@ -134,8 +180,10 @@ document.addEventListener('DOMContentLoaded', () => {
     setTimeout(() => {
       if (res.every(r => r === 'correct')) {
         showNotice('You won!');
+        showStats(true, row + 1);
       } else if (++row >= HEIGHT) {
         showNotice('Answer: ' + solution.toUpperCase());
+        showStats(false, HEIGHT);
       } else {
         col = 0;
       }

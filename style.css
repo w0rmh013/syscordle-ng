@@ -84,3 +84,70 @@ h1 {
 .key:hover { background: #666; }
 .key.enter { width: 70px; }
 .key.back  { width: 55px; }
+
+/* Modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.modal-content {
+  background: #111;
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  color: #fff;
+  text-align: center;
+}
+
+#stats-overview p { margin: 0.5rem 0; }
+
+#guess-dist { margin-top: 1rem; display: flex; flex-direction: column; gap: 6px; }
+
+.guess-bar {
+  display: flex; align-items: center; gap: 6px;
+}
+
+.guess-bar span {
+  width: 32px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.bar {
+  background: #333;
+  flex: 1;
+  height: 20px;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.fill {
+  background: #538d4e;
+  height: 100%;
+  width: 0%;
+  transition: width 0.4s;
+}
+
+.guess-bar.current .fill {
+  background: #b59f3b;
+}
+
+#close-stats {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #444;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+#close-stats:hover { background: #666; }

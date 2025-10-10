@@ -98,7 +98,7 @@ h1 {
 }
 
 .modal-content {
-  background: #111;
+  background: rgba(17, 17, 17, 0.7); /* dark background with slight transparency */
   padding: 1.5rem;
   border-radius: 10px;
   width: 90%;
@@ -107,12 +107,17 @@ h1 {
   text-align: center;
 }
 
+
 #stats-overview p { margin: 0.5rem 0; }
 
 #guess-dist { margin-top: 1rem; display: flex; flex-direction: column; gap: 6px; }
 
+/* Guess Distribution Bars */
 .guess-bar {
-  display: flex; align-items: center; gap: 6px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
 }
 
 .guess-bar span {
@@ -122,23 +127,35 @@ h1 {
 }
 
 .bar {
-  background: #333;
+  background: #555; /* default grey */
   flex: 1;
   height: 20px;
   border-radius: 6px;
   overflow: hidden;
+  position: relative;
 }
 
 .fill {
-  background: #538d4e;
+  background: #777; /* default fill grey */
   height: 100%;
   width: 0%;
-  transition: width 0.4s;
+  transition: width 0.5s;
 }
 
 .guess-bar.current .fill {
-  background: #b59f3b;
+  background: #538d4e; /* green for current win/lose */
 }
+
+.bar-value {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+}
+
 
 #close-stats {
   margin-top: 1rem;

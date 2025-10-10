@@ -114,51 +114,66 @@ document.addEventListener('DOMContentLoaded', () => {
     return res;
   }
 
-  function showStats(win, attempts) {
-    const modal = document.getElementById('stats-modal');
-    const played = parseInt(localStorage.getItem('played') || '0');
-    const wins = parseInt(localStorage.getItem('wins') || '0');
-    const streak = parseInt(localStorage.getItem('streak') || '0');
-    const maxStreak = parseInt(localStorage.getItem('maxStreak') || '0');
+function showStats(win, attempts) {
+  const modal = document.getElementById('stats-modal');
 
-    const newPlayed = played + 1;
-    const newWins = wins + (win ? 1 : 0);
-    const newStreak = win ? streak + 1 : 0;
-    const newMaxStreak = Math.max(maxStreak, newStreak);
+  // Load previous stats
+  let played = parseInt(localStorage.getItem('played') || '0');
+  let wins = parseInt(localStorage.getItem('wins') || '0');
+  let streak = parseInt(localStorage.getItem('streak') || '0');
+  let maxStreak = parseInt(localStorage.getItem('maxStreak') || '0');
+  let guessDist = JSON.parse(localStorage.getItem('guessDist') || '{}');
 
-    localStorage.setItem('played', newPlayed);
-    localStorage.setItem('wins', newWins);
-    localStorage.setItem('streak', newStreak);
-    localStorage.setItem('maxStreak', newMaxStreak);
+  // Update stats
+  played += 1;
+  if (win) wins += 1;
+  streak = win ? streak + 1 : 0;
+  maxStreak = Math.max(maxStreak, streak);
+  localStorage.setItem('played', played);
+  localStorage.setItem('wins', wins);
+  localStorage.setItem('streak', streak);
+  localStorage.setItem('maxStreak', maxStreak);
 
-    document.getElementById('stat-played').textContent = newPlayed;
-    document.getElementById('stat-winpct').textContent = Math.round((newWins / newPlayed) * 100);
-    document.getElementById('stat-current').textContent = newStreak;
-    document.getElementById('stat-max').textContent = newMaxStreak;
+  // Update guess distribution
+  const key = win ? attempts : 'fail';
+  guessDist[key] = (guessDist[key] || 0) + 1;
+  localStorage.setItem('guessDist', JSON.stringify(guessDist));
 
-    // Guess distribution
-    const dist = JSON.parse(localStorage.getItem('guessDist') || '{}');
-    const key = win ? attempts : 'fail';
-    dist[key] = (dist[key] || 0) + 1;
-    localStorage.setItem('guessDist', JSON.stringify(dist));
+  // Update overview
+  document.getElementById('stat-played').textContent = played;
+  document.getElementById('stat-winpct').textContent = Math.round((wins / played) * 100);
+  document.getElementById('stat-current').textContent = streak;
+  document.getElementById('stat-max').textContent = maxStreak;
 
-    // Determine max count for scaling
-    const maxCount = Math.max(...Object.values(dist));
+  // Determine max count for scaling bars
+  const counts = Object.values(guessDist);
+  const maxCount = Math.max(...counts, 1); // avoid division by zero
 
-    document.querySelectorAll('.guess-bar').forEach(barEl => {
-      const tries = barEl.dataset.tries;
-      const count = dist[tries] || 0;
-      barEl.querySelector('.fill').style.width = maxCount ? ((count/maxCount)*100) + '%' : '0%';
-      barEl.classList.remove('current');
-      if (tries == key) barEl.classList.add('current');
-    });
+  // Update bars
+  document.querySelectorAll('.guess-bar').forEach(barEl => {
+    const tries = barEl.dataset.tries;
+    const count = guessDist[tries] || 0;
+    const widthPct = (count / maxCount) * 100;
 
-    modal.style.display = 'flex';
-  }
+    const fill = barEl.querySelector('.fill');
+    const valueEl = barEl.querySelector('.bar-value');
 
-  document.getElementById('close-stats').onclick = () => {
-    document.getElementById('stats-modal').style.display = 'none';
-  };
+    fill.style.width = '0%'; // reset for animation
+    barEl.classList.remove('current');
+    if (tries == key) barEl.classList.add('current');
+
+    valueEl.textContent = count;
+
+    // Animate bar fill
+    setTimeout(() => {
+      fill.style.transition = 'width 0.5s';
+      fill.style.width = widthPct + '%';
+    }, 100);
+  });
+
+  modal.style.display = 'flex';
+}
+
 
   function submitGuess() {
     if (col !== WIDTH) return showNotice('Not enough letters');

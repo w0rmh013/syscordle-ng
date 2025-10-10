@@ -44,7 +44,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const b = document.createElement('button');
       b.textContent = ch;
       b.className = 'key';
-      b.onclick = () => addLetter(ch.toLowerCase());
+      b.onclick = () => {
+        if (window.dailyFinished) return;
+        addLetter(ch.toLowerCase())
+      };
       rowDiv.appendChild(b);
     }
     keyboardEl.appendChild(rowDiv);
@@ -150,7 +153,9 @@ document.addEventListener('DOMContentLoaded', () => {
     const modal = document.getElementById('stats-modal');
 
     // Display today's answer
-    document.getElementById('daily-answer-text').textContent = solution;
+    document.getElementById('daily-answer-text').innerHTML =
+  `<a href="https://man7.org/linux/man-pages/man2/${solution}.2.html" target="_blank" rel="noopener noreferrer">${solution}</a>`;
+
 
     // Load stats
     const played = parseInt(localStorage.getItem('played') || '0');
@@ -273,6 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   document.addEventListener('keydown', e => {
+    if (window.dailyFinished) return;
     const key = e.key.toLowerCase();
     if (/^[a-z0-9]$/.test(key)) addLetter(key);
     else if (key === 'backspace') backspace();
@@ -339,6 +345,14 @@ document.addEventListener('DOMContentLoaded', () => {
       localStorage.removeItem('lastGameKey');
       window.dailyFinished = false;
     }
+
+    document.querySelectorAll('.key').forEach(key => {
+      if (window.dailyFinished) {
+        key.classList.add('disabled');
+      } else {
+        key.classList.remove('disabled');
+      }
+    });
   });
 
   document.getElementById('reset-stats-btn').addEventListener('click', () => {
@@ -357,6 +371,5 @@ document.addEventListener('DOMContentLoaded', () => {
     // Optionally reload page
     location.reload();
   });
-
 
 });

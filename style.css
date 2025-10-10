@@ -103,6 +103,13 @@ h1 {
   transition: background 0.2s;
 }
 
+.key.disabled {
+  background: #333;      /* dark grey */
+  color: #777;           /* lighter text */
+  cursor: default;
+  pointer-events: none;  /* prevent clicks */
+}
+
 .key:hover { background: #444; }
 .key.enter { width: 70px; }
 .key.back  { width: 55px; }
@@ -246,3 +253,9 @@ h1 {
   transition: background 0.2s;
 }
 #reset-stats-btn:hover { background: #7f1d1d; }
+
+#daily-answer-text a {
+  color: #4eaaff;      /* light blue */
+  text-decoration: underline;
+  font-weight: bold;
+}

@@ -397,9 +397,24 @@ document.addEventListener('DOMContentLoaded', () => {
       } else if (!current) {
         key.dataset.state = "absent";
         key.style.background = "#222";
-        // key.style.borderColor = "#222";
-        key.style.color = "#666";
+        key.style.color = "#555";
       }
     }
   }
+
+  function scalePage() {
+    const baseWidth = 800;  // your design width
+    const minScale = 0.8;   // don’t go below this
+
+    let scale = window.innerWidth / baseWidth;
+    scale = Math.min(1, Math.max(scale, minScale));
+
+    const container = document.getElementById('scale-container');
+    container.style.transform = `scale(${scale})`;
+    container.style.transformOrigin = 'top center';
+  }
+
+  window.addEventListener('resize', scalePage);
+  window.addEventListener('load', scalePage);
+
 });

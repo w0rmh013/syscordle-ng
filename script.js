@@ -417,4 +417,12 @@ document.addEventListener('DOMContentLoaded', () => {
   window.addEventListener('resize', scalePage);
   window.addEventListener('load', scalePage);
 
+  // Close stats modal when clicking outside content
+  document.getElementById('stats-modal').addEventListener('click', (event) => {
+    const modalContent = document.querySelector('.modal-content');
+    if (!modalContent.contains(event.target)) {
+      document.getElementById('stats-modal').classList.remove('show');
+    }
+  });
+
 });

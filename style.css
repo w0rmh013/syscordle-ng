@@ -15,6 +15,24 @@ h1 {
   margin-bottom: 1rem;
 }
 
+#syscall-note {
+  font-size: 0.85rem;
+  color: #aaa;        /* light gray for subtle note */
+  margin-top: -0.3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#syscall-note a {
+  color: #4eaaff;     /* light blue link */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#syscall-note a:hover {
+  text-decoration: underline;
+}
+
 #board-container {
   position: relative; /* make notice positioned relative to board */
   width: max-content;

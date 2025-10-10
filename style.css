@@ -159,7 +159,6 @@ h1 {
   background: #b91c1c; /* red for fail */
 }
 
-
 .bar-value {
   position: absolute;
   right: 6px;
@@ -190,7 +189,6 @@ h1 {
   background: #3a6d38;
 }
 
-
 #close-stats {
   margin-top: 1rem;
   padding: 0.5rem 1rem;
@@ -202,3 +200,18 @@ h1 {
 }
 
 #close-stats:hover { background: #666; }
+
+#share-btn {
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #2563eb;
+  color: #fff;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#share-btn:hover {
+  background: #1e40af;
+}

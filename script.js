@@ -233,6 +233,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const res = evaluate(guess, solution);
 
+    // Save guess and result for sharing
+    let history = JSON.parse(localStorage.getItem('lastGameHistory') || '[]');
+    history.push({ guess, res });
+    localStorage.setItem('lastGameHistory', JSON.stringify(history));
+
     // Flip animation
     for (let c = 0; c < WIDTH; c++) {
       const el = getCell(row, c);
@@ -263,11 +268,37 @@ document.addEventListener('DOMContentLoaded', () => {
     }, WIDTH * 250 + 400);
   }
 
-
   document.addEventListener('keydown', e => {
     const key = e.key.toLowerCase();
     if (/^[a-z0-9]$/.test(key)) addLetter(key);
     else if (key === 'backspace') backspace();
     else if (key === 'enter') submitGuess();
   });
+
+  function shareLastGame() {
+    const history = JSON.parse(localStorage.getItem('lastGameHistory') || '[]');
+    if (!history.length) return;
+
+    // Build emoji grid
+    const emojiMap = {
+      correct: '🟩',
+      present: '🟨',
+      absent: '⬜'
+    };
+
+    let grid = history.map(h => h.res.map(r => emojiMap[r] || '⬜').join('')).join('\n');
+
+    // Add attempts summary
+    const lastKey = localStorage.getItem('lastGameKey');
+    const attempts = lastKey === 'fail' ? 'X' : history.length;
+    const text = `Wordle Clone: ${attempts}/6\n${grid}`;
+
+    navigator.clipboard.writeText(text)
+      .then(() => showNotice('Copied result to clipboard!'))
+      .catch(() => showNotice('Failed to copy result.'));
+  }
+
+  // Attach to button
+  document.getElementById('share-btn').addEventListener('click', shareLastGame);
+
 });

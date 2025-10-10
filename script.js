@@ -114,73 +114,119 @@ document.addEventListener('DOMContentLoaded', () => {
     return res;
   }
 
-function showStats(win, attempts) {
-  const modal = document.getElementById('stats-modal');
+  function updateStats(win, attempts) {
+    let played = parseInt(localStorage.getItem('played') || '0');
+    let wins = parseInt(localStorage.getItem('wins') || '0');
+    let streak = parseInt(localStorage.getItem('streak') || '0');
+    let maxStreak = parseInt(localStorage.getItem('maxStreak') || '0');
+    let guessDist = JSON.parse(localStorage.getItem('guessDist') || '{}');
 
-  // Load previous stats
-  let played = parseInt(localStorage.getItem('played') || '0');
-  let wins = parseInt(localStorage.getItem('wins') || '0');
-  let streak = parseInt(localStorage.getItem('streak') || '0');
-  let maxStreak = parseInt(localStorage.getItem('maxStreak') || '0');
-  let guessDist = JSON.parse(localStorage.getItem('guessDist') || '{}');
+    played += 1;
+    if (win) wins += 1;
+    streak = win ? streak + 1 : 0;
+    maxStreak = Math.max(maxStreak, streak);
 
-  // Update stats
-  played += 1;
-  if (win) wins += 1;
-  streak = win ? streak + 1 : 0;
-  maxStreak = Math.max(maxStreak, streak);
-  localStorage.setItem('played', played);
-  localStorage.setItem('wins', wins);
-  localStorage.setItem('streak', streak);
-  localStorage.setItem('maxStreak', maxStreak);
+    const key = win ? attempts : 'fail';
+    guessDist[key] = (guessDist[key] || 0) + 1;
 
-  // Update guess distribution
-  const key = win ? attempts : 'fail';
-  guessDist[key] = (guessDist[key] || 0) + 1;
-  localStorage.setItem('guessDist', JSON.stringify(guessDist));
+    // Store last game key for highlighting
+    localStorage.setItem('lastGameKey', key);
 
-  // Update overview
-  document.getElementById('stat-played').textContent = played;
-  document.getElementById('stat-winpct').textContent = Math.round((wins / played) * 100);
-  document.getElementById('stat-current').textContent = streak;
-  document.getElementById('stat-max').textContent = maxStreak;
+    localStorage.setItem('played', played);
+    localStorage.setItem('wins', wins);
+    localStorage.setItem('streak', streak);
+    localStorage.setItem('maxStreak', maxStreak);
+    localStorage.setItem('guessDist', JSON.stringify(guessDist));
 
-  // Determine max count for scaling bars
-  const counts = Object.values(guessDist);
-  const maxCount = Math.max(...counts, 1); // avoid division by zero
+    displayStatsModal(key); // highlight last game
+  }
 
-  // Update bars
-  document.querySelectorAll('.guess-bar').forEach(barEl => {
-    const tries = barEl.dataset.tries;
-    const count = guessDist[tries] || 0;
-    const widthPct = (count / maxCount) * 100;
+  function displayStatsModal(highlightKey = null) {
+    const modal = document.getElementById('stats-modal');
 
-    const fill = barEl.querySelector('.fill');
-    const valueEl = barEl.querySelector('.bar-value');
+    // Load stats
+    const played = parseInt(localStorage.getItem('played') || '0');
+    const wins = parseInt(localStorage.getItem('wins') || '0');
+    const streak = parseInt(localStorage.getItem('streak') || '0');
+    const maxStreak = parseInt(localStorage.getItem('maxStreak') || '0');
+    const guessDist = JSON.parse(localStorage.getItem('guessDist') || '{}');
 
-    fill.style.width = '0%'; // reset for animation
-    barEl.classList.remove('current');
-    if (tries == key) barEl.classList.add('current');
+    // Use last game key if none provided
+    if (!highlightKey) {
+      highlightKey = localStorage.getItem('lastGameKey') || null;
+    }
 
-    valueEl.textContent = count;
+    // Update overview
+    document.getElementById('stat-played').textContent = played;
+    document.getElementById('stat-winpct').textContent = played ? Math.round((wins / played) * 100) : 0;
+    document.getElementById('stat-current').textContent = streak;
+    document.getElementById('stat-max').textContent = maxStreak;
 
-    // Animate bar fill
-    setTimeout(() => {
-      fill.style.transition = 'width 0.5s';
+    // Determine max count for scaling bars
+    const counts = Object.values(guessDist);
+    const maxCount = Math.max(...counts, 1);
+
+    document.querySelectorAll('.guess-bar').forEach(barEl => {
+      const tries = barEl.dataset.tries;
+      const count = guessDist[tries] || 0;
+      const widthPct = (count / maxCount) * 100;
+
+      const fill = barEl.querySelector('.fill');
+      const valueEl = barEl.querySelector('.bar-value');
+
       fill.style.width = widthPct + '%';
-    }, 100);
+      valueEl.textContent = count;
+
+      barEl.classList.remove('current');
+      if (highlightKey && tries == highlightKey) {
+        barEl.classList.add('current');
+      }
+    });
+
+    modal.style.display = 'flex';
+  }
+
+  // Close modal
+  document.getElementById('close-stats').addEventListener('click', () => {
+    document.getElementById('stats-modal').style.display = 'none';
   });
 
-  modal.style.display = 'flex';
-}
+  // Show Stats button
+  function showStatsButton() {
+    const container = document.getElementById('stats-button-container');
+    let btn = document.getElementById('show-stats-btn');
 
+    if (!btn) {
+      btn = document.createElement('button');
+      btn.id = 'show-stats-btn';
+      btn.textContent = 'Show Stats';
+      btn.onclick = () => displayStatsModal(); // only display modal, do not update stats
+      container.appendChild(btn);
+    }
+
+    btn.style.display = 'inline-block';
+  }
+
+  // Close stats modal when clicking the "Close" button
+  document.getElementById('close-stats').addEventListener('click', () => {
+    document.getElementById('stats-modal').style.display = 'none';
+  });
+
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.getElementById('stats-modal').style.display = 'none';
+    }
+  });
 
   function submitGuess() {
     if (col !== WIDTH) return showNotice('Not enough letters');
+
     const guess = board[row].join('').toLowerCase();
     if (!ALLOWED.has(guess)) return showNotice('Not in list');
 
     const res = evaluate(guess, solution);
+
+    // Flip animation
     for (let c = 0; c < WIDTH; c++) {
       const el = getCell(row, c);
       setTimeout(() => {
@@ -193,17 +239,23 @@ function showStats(win, attempts) {
     }
 
     setTimeout(() => {
-      if (res.every(r => r === 'correct')) {
+      const won = res.every(r => r === 'correct');
+      row += 1; // increment row for next guess
+
+      if (won) {
         showNotice('You won!');
-        showStats(true, row + 1);
-      } else if (++row >= HEIGHT) {
+        updateStats(true, row);  // update stats for win
+        showStatsButton();       // show persistent stats button
+      } else if (row >= HEIGHT) {
         showNotice('Answer: ' + solution.toUpperCase());
-        showStats(false, HEIGHT);
+        updateStats(false, HEIGHT); // update stats for loss
+        showStatsButton();          // show persistent stats button
       } else {
-        col = 0;
+        col = 0; // reset column for next guess
       }
     }, WIDTH * 250 + 400);
   }
+
 
   document.addEventListener('keydown', e => {
     const key = e.key.toLowerCase();

@@ -122,7 +122,7 @@ input, button {
   flex-direction: column;
   align-items: center;
   gap: 0.4rem;
-  width: 100vw;              /* full viewport width */
+  
   overflow-x: hidden;        /* prevent horizontal scroll */
   box-sizing: border-box;    /* include padding in width */
 }

@@ -48,6 +48,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (window.dailyFinished) return;
         addLetter(ch.toLowerCase())
       };
+      b.dataset.key = ch;
       rowDiv.appendChild(b);
     }
     keyboardEl.appendChild(rowDiv);
@@ -260,6 +261,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     setTimeout(() => {
+      updateKeyboardColors(guess, res);
+
       const won = res.every(r => r === 'correct');
       row += 1; // increment row for next guess
 
@@ -372,4 +375,31 @@ document.addEventListener('DOMContentLoaded', () => {
     location.reload();
   });
 
+  function updateKeyboardColors(guess, result) {
+    // result[i] should be "correct", "present", or "absent"
+    for (let i = 0; i < guess.length; i++) {
+      const letter = guess[i].toUpperCase();
+      const key = document.querySelector(`.key[data-key="${letter}"]`);
+      if (!key) continue;
+
+      // Determine the current key state
+      const current = key.dataset.state;
+
+      // Priority: correct > present > absent
+      if (result[i] === "correct") {
+        key.dataset.state = "correct";
+        key.style.background = "#43a047";
+        key.style.borderColor = "#43a047";
+      } else if (result[i] === "present" && current !== "correct") {
+        key.dataset.state = "present";
+        key.style.background = "#c0b14f";
+        key.style.borderColor = "#c0b14f";
+      } else if (!current) {
+        key.dataset.state = "absent";
+        key.style.background = "#222";
+        // key.style.borderColor = "#222";
+        key.style.color = "#666";
+      }
+    }
+  }
 });

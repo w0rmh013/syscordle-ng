@@ -10,6 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const solution = getDailyWord();
+  const todayKey = new Date().toISOString().slice(0,10);
   const ALLOWED = new Set(window.WORD_LIST.map(w => w.toLowerCase()));
 
   const boardEl = document.getElementById('board');
@@ -291,7 +292,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add attempts summary
     const lastKey = localStorage.getItem('lastGameKey');
     const attempts = lastKey === 'fail' ? 'X' : history.length;
-    const text = `Wordle Clone: ${attempts}/6\n${grid}`;
+    const text = `Syscordle-ng: ${attempts}/6\n${grid}`;
 
     navigator.clipboard.writeText(text)
       .then(() => showNotice('Copied result to clipboard!'))
@@ -300,5 +301,41 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Attach to button
   document.getElementById('share-btn').addEventListener('click', shareLastGame);
+
+  window.addEventListener('load', () => {
+    const lastGameDate = localStorage.getItem('dailyDate');
+    const lastKey = localStorage.getItem('lastGameKey');
+    const history = JSON.parse(localStorage.getItem('lastGameHistory') || '[]');
+
+    if (lastGameDate === todayKey && lastKey && history.length) {
+      // Render previous guesses
+      history.forEach((h, rowIndex) => {
+        h.guess.split('').forEach((letter, colIndex) => {
+          const el = getCell(rowIndex, colIndex);
+          el.textContent = letter.toUpperCase();
+          el.classList.add(h.res[colIndex]);
+        });
+      });
+
+      // Set row to next empty row (or past last row if finished)
+      row = history.length;
+      col = 0;
+
+      // Show stats automatically
+      displayStatsModal(lastKey);
+
+      // Show persistent "Show Stats" button
+      showStatsButton();
+
+      // Mark daily as finished so keyboard can be disabled if needed
+      window.dailyFinished = true;
+    } else {
+      // New game for today
+      localStorage.setItem('dailyDate', todayKey);
+      localStorage.removeItem('lastGameHistory');
+      localStorage.removeItem('lastGameKey');
+      window.dailyFinished = false;
+    }
+  });
 
 });

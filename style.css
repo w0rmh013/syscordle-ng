@@ -143,9 +143,22 @@ h1 {
   transition: width 0.5s;
 }
 
-.guess-bar.current .fill {
-  background: #538d4e; /* green for current win/lose */
+.guess-bar .fill {
+  background: #777; /* default grey */
+  height: 100%;
+  width: 0%;
+  border-radius: 6px;
+  transition: width 0.5s;
 }
+
+.guess-bar.current.win .fill {
+  background: #538d4e; /* green for win */
+}
+
+.guess-bar.current.fail .fill {
+  background: #b91c1c; /* red for fail */
+}
+
 
 .bar-value {
   position: absolute;

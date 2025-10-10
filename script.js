@@ -177,9 +177,16 @@ document.addEventListener('DOMContentLoaded', () => {
       fill.style.width = widthPct + '%';
       valueEl.textContent = count;
 
-      barEl.classList.remove('current');
+      // remove previous highlight classes
+      barEl.classList.remove('current', 'win', 'fail');
+
       if (highlightKey && tries == highlightKey) {
         barEl.classList.add('current');
+        if (highlightKey === 'fail') {
+          barEl.classList.add('fail');
+        } else {
+          barEl.classList.add('win');
+        }
       }
     });
 

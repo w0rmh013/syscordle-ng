@@ -3,44 +3,29 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Client-side Wordle — Daily</title>
+  <title>Client-side Wordle — Centered Keyboard</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <main class="app">
-    <header>
-      <h1>Wordle — Daily (client)</h1>
-      <div class="stats">
-        <div><strong id="played">0</strong><span>Played</span></div>
-        <div><strong id="wins">0</strong><span>Wins</span></div>
-        <div><strong id="streak">0</strong><span>Streak</span></div>
-      </div>
-    </header>
+  <main class="wrap">
+    <h1>Wordle — Daily</h1>
 
-    <section id="board" class="board" aria-live="polite"></section>
+    <!-- Board -->
+    <div id="board" class="board" aria-live="polite"></div>
 
-    <section class="controls">
-      <div id="keyboard" class="keyboard" aria-label="Letter keyboard"></div>
+    <!-- Keyboard container: width matches board and is centered -->
+    <div id="keyboard-container" class="keyboard-container">
+      <div id="keyboard" class="keyboard"></div>
 
-      <div id="side" class="side">
-        <div id="numpad" class="numpad" aria-label="Numpad"></div>
-        <div class="side-buttons">
-          <button id="enterKey" class="key action enter">Enter</button>
-          <button id="backKey" class="key action back">⌫</button>
-        </div>
-      </div>
-    </section>
+      <!-- numpad centered below the keyboard -->
+      <div id="numpad" class="numpad"></div>
+    </div>
 
     <div id="notice" class="notice" aria-live="assertive"></div>
-
-    <footer class="footer">
-      <small>All client-side — words come from <code>words.js</code></small>
-    </footer>
   </main>
 
-  <!-- load words file first -->
+  <!-- words must load first -->
   <script src="words.js"></script>
-  <!-- main logic -->
   <script src="script.js"></script>
 </body>
 </html>

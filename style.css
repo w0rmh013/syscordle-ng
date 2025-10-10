@@ -1,54 +1,108 @@
 :root{
-  --bg1:#0b1220;
-  --bg2:#071028;
-  --panel:#0f1724;
-  --text:#edf6ff;
+  --tile:56px;
+  --gap:6px;
+  --key-w:44px;
+  --key-h:40px;
+  --bg1:#081226;
+  --bg2:#071020;
+  --panel:rgba(255,255,255,0.03);
+  --text:#eaf4ff;
   --muted:#9fb0c8;
   --correct:#538d4e;
   --present:#b59f3b;
   --absent:#3a3a3c;
-  --accent:#8ec5ff;
 }
 
 *{box-sizing:border-box}
 html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,Arial;color:var(--text);background:linear-gradient(180deg,var(--bg1),var(--bg2));}
 
-.app{max-width:820px;margin:28px auto;padding:18px;border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), transparent);box-shadow:0 8px 40px rgba(0,0,0,0.6)}
-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-h1{font-size:18px;margin:0}
-.stats{display:flex;gap:12px}
-.stats div{display:flex;flex-direction:column;align-items:center;font-size:13px;color:var(--muted)}
-.stats strong{color:var(--accent);font-size:16px}
+.wrap{max-width:420px;margin:28px auto;padding:18px;border-radius:12px;background:linear-gradient(180deg,var(--panel),transparent);text-align:center}
+h1{margin:0 0 12px;font-size:20px}
 
-.board{display:grid;grid-template-rows:repeat(6,1fr);gap:6px;justify-items:center;margin:6px 0}
-.row{display:grid;grid-template-columns:repeat(5,56px);gap:6px}
-.cell{width:56px;height:56px;border-radius:8px;background:rgba(255,255,255,0.02);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:24px;letter-spacing:2px;text-transform:uppercase;border:2px solid rgba(255,255,255,0.03);transition:transform .32s ease, background .28s ease}
+/* Board width is exactly (5 tiles + 4 gaps) so keyboard can match it */
+.board{
+  width: calc(var(--tile) * 5 + var(--gap) * 4);
+  margin: 0 auto 12px;
+  display:grid;
+  gap: var(--gap);
+  grid-template-rows: repeat(6, var(--tile));
+}
+
+.row{
+  display:flex;
+  gap: var(--gap);
+  justify-content:center;
+}
+
+.cell{
+  width:var(--tile);
+  height:var(--tile);
+  border-radius:8px;
+  background: rgba(255,255,255,0.02);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:700;
+  font-size:22px;
+  text-transform:uppercase;
+  border:2px solid rgba(255,255,255,0.03);
+  transition: transform 0.28s ease, background 0.24s ease;
+}
 
 .cell.filled{border-color:rgba(255,255,255,0.06)}
-
 .cell.correct{background:var(--correct);border-color:var(--correct)}
 .cell.present{background:var(--present);border-color:var(--present)}
 .cell.absent{background:var(--absent);border-color:var(--absent)}
 
-.controls{display:flex;gap:14px;align-items:flex-start;margin-top:12px}
-.keyboard{display:grid;grid-template-columns:repeat(10,34px);gap:8px;align-self:flex-start}
-.numpad{display:grid;grid-template-columns:repeat(3,48px);gap:8px;align-self:flex-start}
-.side{display:flex;flex-direction:column;gap:10px;align-items:center}
-.side-buttons{display:flex;flex-direction:column;gap:8px}
-.key{background:#0f1728;color:var(--text);border:1px solid rgba(255,255,255,0.03);padding:8px;border-radius:8px;cursor:pointer;font-weight:600;text-align:center;min-width:34px}
-.key:active{transform:translateY(1px)}
-.key.action{min-width:48px;padding:10px 12px}
-.key.enter{min-width:72px}
-.key.back{min-width:56px}
+/* Keyboard container width matches board so everything aligns */
+.keyboard-container{
+  width: calc(var(--tile) * 5 + var(--gap) * 4);
+  margin: 0 auto;
+  display:flex;
+  flex-direction:column;
+  gap:10px;
+  align-items:center;
+}
 
-.notice{height:22px;margin-top:10px;color:var(--muted);text-align:center;min-height:22px}
-.footer{margin-top:12px;text-align:center;color:var(--muted);font-size:12px}
+/* keyboard rows centered */
+.keyboard{ display:flex; flex-direction:column; gap:8px; width:100% }
+.krow{ display:flex; justify-content:center; gap:8px }
 
-/* smaller screens */
-@media (max-width:640px){
-  .app{margin:12px;padding:12px}
-  .row{grid-template-columns:repeat(5,44px)}
-  .cell{width:44px;height:44px;font-size:20px}
-  .keyboard{grid-template-columns:repeat(10,30px);gap:6px}
-  .numpad{grid-template-columns:repeat(3,40px);gap:6px}
+/* key styling */
+.key{
+  min-width: var(--key-w);
+  height: var(--key-h);
+  border-radius:6px;
+  border:1px solid rgba(255,255,255,0.04);
+  background: rgba(255,255,255,0.02);
+  color:var(--text);
+  font-weight:700;
+  cursor:pointer;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  user-select:none;
+  padding:0 8px;
+}
+.key:active{ transform: translateY(1px) }
+
+.key.enter{ min-width: 84px }
+.key.back { min-width: 60px }
+
+.numpad{
+  display:grid;
+  grid-template-columns: repeat(3, var(--key-w));
+  gap:8px;
+  justify-content:center;
+  margin-top:2px;
+}
+
+/* notice */
+.notice{ height:22px;margin-top:12px;color:var(--muted);font-size:13px;opacity:0;transition:opacity .2s }
+
+/* responsive: scale down on small screens */
+@media (max-width:400px){
+  :root{ --tile:48px; --key-w:38px; --key-h:36px; --gap:4px }
+  .wrap{ padding:12px }
+  h1{ font-size:18px }
 }

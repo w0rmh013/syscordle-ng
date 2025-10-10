@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     boardEl.appendChild(rowEl);
   }
 
-  // Build keyboard rows
+  // Build keyboard
   const kbLayout = [
     "1234567890",
     "QWERTYUIOP",

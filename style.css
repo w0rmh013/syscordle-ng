@@ -12,7 +12,16 @@ body {
 
 h1 {
   letter-spacing: 3px;
-  margin-bottom: 1.2rem;
+  margin-bottom: 1rem;
+}
+
+#notice {
+  margin-bottom: 1rem;
+  background: rgba(0,0,0,0.8);
+  padding: 0.6rem 1rem;
+  border-radius: 6px;
+  opacity: 0;
+  transition: opacity 0.3s;
 }
 
 #board {
@@ -75,12 +84,3 @@ h1 {
 .key:hover { background: #666; }
 .key.enter { width: 70px; }
 .key.back  { width: 55px; }
-
-#notice {
-  margin-top: 1.2rem;
-  background: rgba(0,0,0,0.8);
-  padding: 0.6rem 1rem;
-  border-radius: 6px;
-  opacity: 0;
-  transition: opacity 0.3s;
-}

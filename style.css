@@ -1,0 +1,279 @@
+body {
+  font-family: 'Fira Mono', 'Courier New', Courier, monospace; /* console-style font */
+  background: linear-gradient(160deg, #222, #111);
+  color: #fff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-height: 100vh;
+  margin: 0;
+  padding: 20px;
+}
+
+h1 {
+  letter-spacing: 3px;
+  margin-bottom: 1rem;
+}
+
+#syscall-note {
+  font-size: 0.85rem;
+  color: #aaa;        /* light gray for subtle note */
+  margin-top: -0.3rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+#syscall-note a {
+  color: #4eaaff;     /* light blue link */
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#syscall-note a:hover {
+  text-decoration: underline;
+}
+
+#board-container {
+  position: relative; /* make notice positioned relative to board */
+  width: max-content;
+  margin: 0 auto;
+}
+
+#notice {
+  position: absolute;
+  top: 20%; /* adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0, 0, 0, 0.85);
+  color: #fff; /* plain white, no green */
+  padding: 0.3rem 0.8rem;
+  border-radius: 4px; /* slightly smaller rounded corners for console vibe */
+  font-weight: bold;
+  z-index: 100;
+  opacity: 0;
+  pointer-events: none;
+  white-space: nowrap; /* single line */
+  font-size: 0.9rem;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: inline-block;
+}
+
+#notice.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(10px);
+  pointer-events: auto;
+}
+
+#board {
+  display: grid;
+  grid-template-rows: repeat(6, 1fr);
+  gap: 0.3rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.3rem;
+}
+
+.cell {
+  width: 60px;
+  height: 60px;
+  border: 2px solid #444;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.6rem;        /* slightly larger for emphasis */
+  font-weight: 900;          /* extra bold */
+  text-transform: uppercase;
+  background: #111;
+  border-radius: 2px; /* squared for console vibe */
+  transition: background 0.3s, transform 0.4s;
+}
+
+.cell.correct { background: #43a047; border-color: #43a047; color: #fff; }  /* brighter muted green */
+.cell.present { background: #c0b14f; border-color: #c0b14f; color: #fff; }  /* brighter muted yellow */
+.cell.absent  { background: #333; border-color: #333; color: #888; }
+
+#keyboard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.kb-row {
+  display: flex;
+  justify-content: center;
+  gap: 0.3rem;
+}
+
+.key {
+  background: #222;
+  color: #fff;
+  border: 1px solid #555;
+  border-radius: 2px; /* squared keys */
+  padding: 0.6rem 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  width: 40px;
+  text-align: center;
+  transition: background 0.2s;
+}
+
+.key.disabled {
+  background: #333;      /* dark grey */
+  color: #777;           /* lighter text */
+  cursor: default;
+  pointer-events: none;  /* prevent clicks */
+}
+
+.key:hover { background: #444; }
+.key.enter { width: 70px; }
+.key.back  { width: 55px; }
+
+/* Stats Modal */
+.modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+
+  opacity: 0;                 /* start hidden */
+  pointer-events: none;       /* prevent interaction when hidden */
+  transition: opacity 0.3s ease;
+}
+
+/* Show modal */
+.modal.show {
+  opacity: 1;
+  pointer-events: auto;       /* enable interaction when visible */
+}
+
+/* Keep modal content as-is */
+.modal-content {
+  background: rgba(17, 17, 17, 0.7);
+  padding: 1.5rem;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 400px;
+  color: #fff;
+  text-align: center;
+}
+
+
+#stats-overview p { margin: 0.5rem 0; }
+#guess-dist { margin-top: 1rem; display: flex; flex-direction: column; gap: 6px; }
+
+.guess-bar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+}
+
+.guess-bar span {
+  width: 32px;
+  text-align: right;
+  font-weight: bold;
+}
+
+.bar {
+  flex: 1;
+  height: 20px;
+  border-radius: 2px; /* squared bar edges */
+  overflow: hidden;
+  position: relative;
+}
+
+.fill {
+  background: #555; /* default grey */
+  height: 100%;
+  width: 0%;
+  border-radius: 2px;
+  transition: width 0.5s;
+}
+
+.guess-bar.current.win .fill { background: #43a047; }   /* same green as correct letters */
+.guess-bar.current.fail .fill { background: #b91c1c; }  /* red stays the same */
+
+.bar-value {
+  position: absolute;
+  right: 6px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.85rem;
+  font-weight: bold;
+  color: #fff;
+}
+
+#stats-button-container {
+  margin: 0.5rem 0;
+  display: flex;
+  justify-content: center;
+}
+
+#show-stats-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  background: #374151;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+#show-stats-btn:hover { background: #1f2937; }
+
+.stats-buttons {
+  display: flex;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+#share-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#share-btn:hover { background: #1e40af; }
+
+#close-stats {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #374151;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#close-stats:hover { background: #1f2937; }
+
+#reset-stats-btn {
+  padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 4px;
+  background: #b91c1c;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#reset-stats-btn:hover { background: #7f1d1d; }
+
+#daily-answer-text a {
+  color: #4eaaff;      /* light blue */
+  text-decoration: underline;
+  font-weight: bold;
+}

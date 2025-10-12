@@ -1,7 +1,4 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const WIDTH = 5, HEIGHT = 6;
-  let board = Array.from({ length: HEIGHT }, () => Array(WIDTH).fill(''));
-  let row = 0, col = 0;
 
   function getDailyWord() {
     const now = new Date();
@@ -16,6 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const solution = getDailyWord();
+
+  const WIDTH = solution.length;
+  const HEIGHT = WIDTH === 6 ? 7 : 6;
+  let board = Array.from({ length: HEIGHT }, () => Array(WIDTH).fill(''));
+  let row = 0, col = 0;
+
   const todayKey = new Date().toISOString().slice(0,10);
   const ALLOWED = new Set(window.WORD_LIST.map(w => w.toLowerCase()));
 
@@ -23,17 +26,24 @@ document.addEventListener('DOMContentLoaded', () => {
   const keyboardEl = document.getElementById('keyboard');
   const notice = document.getElementById('notice');
 
-  // Create grid
+  boardEl.innerHTML = '';
+
   for (let r = 0; r < HEIGHT; r++) {
     const rowEl = document.createElement('div');
     rowEl.className = 'row';
+    rowEl.style.gridTemplateColumns = `repeat(${WIDTH}, 1fr)`;
+
     for (let c = 0; c < WIDTH; c++) {
       const cell = document.createElement('div');
       cell.className = 'cell';
       rowEl.appendChild(cell);
     }
+
     boardEl.appendChild(rowEl);
   }
+
+  // Update grid rows
+  boardEl.style.gridTemplateRows = `repeat(${HEIGHT}, 1fr)`;
 
   // Build keyboard
   const kbLayout = [

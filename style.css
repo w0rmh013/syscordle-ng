@@ -18,6 +18,10 @@ html, body {
   text-align: center; /* helps align the title on small screens */
 }
 
+button {
+    touch-action: manipulation;
+}
+
 h1 {
   letter-spacing: 3px;
   margin-bottom: 1rem;

@@ -4,8 +4,14 @@ document.addEventListener('DOMContentLoaded', () => {
   let row = 0, col = 0;
 
   function getDailyWord() {
-    const today = new Date().toISOString();
-    const seed = today.getFullYear() * 1000 + today.getMonth() * 31 + today.getDate();
+    const now = new Date();
+    const yyyy = now.getUTCFullYear();
+    const mm = now.getUTCMonth(); // still 0-based
+    const dd = now.getUTCDate();
+
+    // Stable UTC-based seed
+    const seed = yyyy * 1000 + mm * 31 + dd;
+
     return window.WORD_LIST[seed % window.WORD_LIST.length].toLowerCase();
   }
 

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
   let row = 0, col = 0;
 
   function getDailyWord() {
-    const today = new Date();
+    const today = new Date().toISOString();
     const seed = today.getFullYear() * 1000 + today.getMonth() * 31 + today.getDate();
     return window.WORD_LIST[seed % window.WORD_LIST.length].toLowerCase();
   }

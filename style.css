@@ -50,6 +50,23 @@ h1 {
   text-decoration: underline;
 }
 
+#bug-report {
+  font-size: 0.85rem;
+  color: #aaa;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+#bug-report a {
+  color: #4eaaff;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#bug-report a:hover {
+  text-decoration: underline;
+}
+
 #board-container {
   position: relative; /* make notice positioned relative to board */
   width: max-content;

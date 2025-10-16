@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const seed = yyyy * 1000 + mm * 31 + dd;
 
     const rng = new RNG(seed);
-    const index = rng.random(0, window.WORD_LIST.length - 1);
+    const index = rng.random(0, window.WORD_LIST.length);
 
     return window.WORD_LIST[index].toLowerCase();
   }

@@ -9,7 +9,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Stable UTC-based seed
     const seed = yyyy * 1000 + mm * 31 + dd;
 
-    return window.WORD_LIST[seed % window.WORD_LIST.length].toLowerCase();
+    const rng = new RNG(seed);
+    const index = rng.random(0, window.WORD_LIST.length - 1);
+
+    return window.WORD_LIST[index].toLowerCase();
   }
 
   const solution = getDailyWord();
